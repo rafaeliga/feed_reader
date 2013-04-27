@@ -12,6 +12,17 @@ $(function() {
 
     search(url_to_search);
   });
+
+  $('.show_feed').on("click", function() {
+    e.stopImmediatePropagation();
+    e.preventDefault();
+
+    message('lakdgnbn')
+    message(event)
+    show_content($(this).data('content'), $(this).data('media-url'));
+
+    return false;
+  });
 });
 
 function message(val) {
@@ -60,8 +71,13 @@ function show_item_from_feed(url, xml) {
     appendHtml += fetchItemAsHTML($(this));
 
     var item = {};
+    var datetime = new Date(Date.parse($(this).find('pubDate').text()));
+    item['timestamp'] = datetime.getTime();
     item['title'] = $(this).find("title").text();
     item['readed'] = false;
+    item['content'] = $(this).find("description").text();
+    item['media_url'] = $(this).find("enclosure").attr('url');
+    console.log(item)
     items.push(item);
   });
 
@@ -115,22 +131,38 @@ function save_feed(url, items) {
 }
 
 function get_urls() {
-  chrome.storage.local.get('feeds', function(items) {
+  chrome.storage.local.get('feeds', function(feed_items) {
 
-    $.each(items['feeds'], function(index, item) {
+    $.each(feed_items['feeds'], function(index, item) {
       if(item['items'].length > 0) {
         $.each(item['items'], function(index, item) {
           if (item['readed'] == false) {
-            $('#unread ul').append('<li>'+item['title']+'</li>');
+            $('#unread ul').append('<li><a href="#show_feed_'+item['timestamp']+'" class="show_feed">'+item['title']+'</a></li>');
+            $('body').append('<div data-role="page" id="show_feed_'+item['timestamp']+'" data-theme="a">'+
+                              +'<div data-role="header">'+
+                                +'<div data-role="navbar">'+
+                                  +'<ul>'+
+                                    +'<li><a href="#settings_page">Settings</a></li>'+
+                                    +'<li><a href="#show_all_page">Show All</a></li>'+
+                                    +'<li><a href="#show_starred_page">Show Starred</a></li>'+
+                                    +'<li><a href="#show_unread">Show Unread</a></li>'+
+                                    +'<li><a href="#show_feed">Add Feed</a></li>'+
+                                  +'</ul>'+
+                                +'</div>'+
+                              +'</div>'+
+                              +'<div data-role="content">'+item['content']+' -------- '+item['media_url']+'</div>'+
+                            +'</div>');
           }
         })
       }
     })
-    
+
   });
 }
 
-function unread_items() {
-
+function show_content(content, media_url) {
+  message('---')
+  message(content)
+  $('#feed_content').html(content + "------" + media_url);
 }
 
