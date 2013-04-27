@@ -2,7 +2,9 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Hello World</title>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+
+    <title>Feed Reader</title>
 
 
     <link rel="stylesheet" href="assets/stylesheets/main.css">
@@ -10,43 +12,6 @@
     <link rel="stylesheet" href="assets/stylesheets/themes/green.css">
 </head>
 <body>
-
-    <div data-role="page" id="main_page">
-      <div data-role="header">
-        <div data-role="navbar">
-          <ul>
-            <li><a href="#settings_page">Settings</a></li>
-            <li><a href="#show_all_page">Show All</a></li>
-            <li><a href="#show_starred_page">Show Starred</a></li>
-            <li><a href="#show_unread">Show Unread</a></li>
-            <li><a href="#show_feed">Add Feed</a></li>
-          </ul>
-        </div><!-- /navbar -->
-      </div>
-      <div data-role="content">
-        <h2>Content....</h2>
-        <input type="text" value="" id="term" size="50" /> <input type="button" value="Mostrar items" id="search_feed" />
-      </div>
-      <!-- <div data-role="footer">...</div> -->
-    </div>
-
-    <div data-role="page" id="settings_page" data-theme="a">
-      <div data-role="header">
-        <div data-role="navbar">
-          <ul>
-            <li><a href="#settings_page">Settings</a></li>
-            <li><a href="#show_all_page">Show All</a></li>
-            <li><a href="#show_starred_page">Show Starred</a></li>
-            <li><a href="#show_unread">Show Unread</a></li>
-            <li><a href="#show_feed">Add Feed</a></li>
-          </ul>
-        </div><!-- /navbar -->
-      </div>
-      <div data-role="content">
-        <h2>Settins....</h2>
-      </div>
-      <!-- <div data-role="footer">...</div> -->
-    </div>
 
     <div data-role="page" id="show_all_page"  data-theme="a">
       <div data-role="header">
@@ -56,17 +21,20 @@
             <li><a href="#show_all_page">Show All</a></li>
             <li><a href="#show_starred_page">Show Starred</a></li>
             <li><a href="#show_unread">Show Unread</a></li>
-            <li><a href="#show_feed">Add Feed</a></li>
+            <li><a href="#" class="open_dialog">Add Feed</a></li>
           </ul>
         </div><!-- /navbar -->
       </div>
       <div data-role="content">
         <h2>Show all....</h2>
-        <a href="#channels_page">Channels ></a>
+        <ul data-role="listview" data-count-theme="c" data-inset="true">
+          <li><a href="#channels_page">Channels <span class="ui-li-count">12</span></a></li>
+        </ul>
       </div>
-      <!-- <div data-role="footer">...</div> -->
     </div>
+    
 
+    <!-- Channels -->
     <div data-role="page" id="channels_page" data-theme="a">
       <div data-role="header">
         <div data-role="navbar">
@@ -75,18 +43,25 @@
             <li><a href="#show_all_page">Show All</a></li>
             <li><a href="#show_starred_page">Show Starred</a></li>
             <li><a href="#show_unread">Show Unread</a></li>
-            <li><a href="#show_feed">Add Feed</a></li>
+            <li><a href="#" class="open_dialog">Add Feed</a></li>
           </ul>
         </div><!-- /navbar -->
       </div>
       <div data-role="content">
-        <h2>Channels</h2>
-        <div id="channels">
-        </div>
-      </div>
-      <!-- <div data-role="footer">...</div> -->
-    </div>
 
+        <h2>Channels</h2>
+        <div class="list_channels">
+          <ul id="channels" data-role="listview" data-inset="true">
+          </ul>  
+        </div>
+        
+        <!-- <div id="channels">
+        </div> -->
+      </div>
+    </div>
+  
+
+    <!-- Starred -->
     <div data-role="page" id="show_starred_page"  data-theme="a">
       <div data-role="header">
         <div data-role="navbar">
@@ -95,16 +70,17 @@
             <li><a href="#show_all_page">Show All</a></li>
             <li><a href="#show_starred_page">Show Starred</a></li>
             <li><a href="#show_unread">Show Unread</a></li>
-            <li><a href="#show_feed">Add Feed</a></li>
+            <li><a href="#" class="open_dialog">Add Feed</a></li>
           </ul>
         </div><!-- /navbar -->
       </div>
       <div data-role="content">
         <h2>Show Starred....</h2>
       </div>
-      <!-- <div data-role="footer">...</div> -->
     </div>
+  
 
+    <!-- Unread -->
     <div data-role="page" id="show_unread"  data-theme="a">
       <div data-role="header">
         <div data-role="navbar">
@@ -113,7 +89,7 @@
             <li><a href="#show_all_page">Show All</a></li>
             <li><a href="#show_starred_page">Show Starred</a></li>
             <li><a href="#show_unread">Show Unread</a></li>
-            <li><a href="#show_feed">Add Feed</a></li>
+            <li><a href="#" class="open_dialog">Add Feed</a></li>
           </ul>
         </div><!-- /navbar -->
       </div>
@@ -123,10 +99,11 @@
           <ul></ul>
         </div>
       </div>
-      <!-- <div data-role="footer">...</div> -->
     </div>
+    
 
-    <div data-role="page" id="show_feed"  data-theme="a">
+    <!-- Settings -->
+    <div data-role="page" id="settings_page" data-theme="a">
       <div data-role="header">
         <div data-role="navbar">
           <ul>
@@ -134,7 +111,7 @@
             <li><a href="#show_all_page">Show All</a></li>
             <li><a href="#show_starred_page">Show Starred</a></li>
             <li><a href="#show_unread">Show Unread</a></li>
-            <li><a href="#show_feed">Add Feed</a></li>
+            <li><a href="#" class="open_dialog">Add Feed</a></li>
           </ul>
         </div><!-- /navbar -->
       </div>
@@ -142,10 +119,19 @@
         <h2>Show Feed....</h2>
         <div id="feed_content"></div>
       </div>
-      <!-- <div data-role="footer">...</div> -->
+    </div>
+
+
+    <!-- dialog -->
+    <div id="box_add_feed">
+      <form action="#">
+        <input type="text" name="url" id="term" size="50" placeholder="Feed or Site Url" value="">
+        <input type="button" value="Mostrar items" id="search_feed">
+      </form>        
     </div>
   
-
+  
+    <!-- javascripts -->
     <script type="text/javascript" src="assets/javascripts/jquery-2.0.0.min.js"></script>
     <script type="text/javascript" src="assets/javascripts/jquery.mobile-1.3.1.min.js"></script>
     <script type="text/javascript" src="assets/javascripts/reader.js"></script>

@@ -3,6 +3,11 @@ $(function() {
 
   get_urls()
 
+  // Open Dialog
+  $(".open_dialog").on("click", function(){
+    $("#box_add_feed").fadeToggle("fast", "linear");
+  });
+  //  Search Feed
   $('#search_feed').on("click", function() {
     var url_to_search = $('#term').val();
 
@@ -12,6 +17,7 @@ $(function() {
 
     search(url_to_search);
   });
+
 
   $('.show_feed').on("click", function() {
     e.stopImmediatePropagation();
@@ -23,7 +29,9 @@ $(function() {
 
     return false;
   });
+
 });
+
 
 function message(val) {
   console.log(val);
@@ -61,14 +69,12 @@ function show_item_from_feed(url, xml) {
   $divchannels = $("#channels");
 
   var appendHtml = "";
-  appendHtml += "<a >"
-  appendHtml += " <ul>"
 
   var items = [];
 
   $channel.find("item").each( function(){
     
-    appendHtml += fetchItemAsHTML($(this));
+    // appendHtml += fetchItemAsHTML($(this));
 
     var item = {};
     var datetime = new Date(Date.parse($(this).find('pubDate').text()));
@@ -79,10 +85,16 @@ function show_item_from_feed(url, xml) {
     item['media_url'] = $(this).find("enclosure").attr('url');
     console.log(item)
     items.push(item);
+
+    appendHtml += "<li data-role='list-divider'>"+$(this).find("pubDate").text()+"<span class='ui-li-count'>1</span></li>" +
+                  "<li>" +
+                    "<a href='index.html'>" +
+                      "<h2>"+$(this).find("title").text()+"</h2>" +
+                    "</a>"
+                  "</li>";
+
   });
 
-  appendHtml += "</ul>"
-  appendHtml += "</a>"
   $divchannels.html(appendHtml);
 
   save_feed(url, items);
