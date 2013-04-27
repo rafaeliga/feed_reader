@@ -14,7 +14,7 @@ $(function() {
     if(!url_to_search.match(/http:\/\//)) {
       url_to_search = "http://"+url_to_search;
     }
-
+    $("#box_add_feed").fadeOut();
     search(url_to_search);
   });
 
