@@ -2,7 +2,11 @@
   "manifest_version": 2,
   "name": "Feed_Reader",
   "version": "1",
-  "permissions": [],
+  "permissions": [
+    "<all_urls>",
+    "storage",
+    "webview"
+  ],
   "app": {
     "background": {
       "scripts": ["main.js"]
