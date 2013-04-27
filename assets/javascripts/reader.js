@@ -109,16 +109,28 @@ function save_feed(url, items) {
               }
              ];
 
-  chrome.storage.local.set({'feeds': [urls]}, function() {
+  chrome.storage.local.set({'feeds': urls}, function() {
     message('URLs saved');
   });
 }
 
 function get_urls() {
   chrome.storage.local.get('feeds', function(items) {
-    $.each(items['feeds'], function(key, value) {
-      message(key)
-      message(value)
+
+    $.each(items['feeds'], function(index, item) {
+      if(item['items'].length > 0) {
+        $.each(item['items'], function(index, item) {
+          if (item['readed'] == false) {
+            $('#unread ul').append('<li>'+item['title']+'</li>');
+          }
+        })
+      }
     })
+    
   });
 }
+
+function unread_items() {
+
+}
+
