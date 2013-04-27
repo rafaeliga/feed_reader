@@ -42,11 +42,44 @@ function show_item_from_feed(xml) {
   $channel = $xml.find( "channel" )
   $divchannels = $("#channels");
 
-  var appendHtml;
+  var appendHtml = "";
+  appendHtml += "<a >"
+  appendHtml += " <ul>"
 
   $channel.find("item").each( function(){
-    appendHtml += $(this).find("title").text() + "<br><br>";
+    // appendHtml += $(this).find("title").text() + "<br><br>";
+    appendHtml += fetchItemAsHTML($(this));
   });
 
+  appendHtml += "</ul>"
+  appendHtml += "</a>"
   $divchannels.html(appendHtml);
+}
+
+function fetchItemAsHTML(item){
+  console.log(item);
+  var returnHtml = "<li>";
+
+  var title = "";
+  var link = "";
+  var pubDate = "";
+
+  title = item.find("title").text() + "<br>";
+  link = item.find("link").text() + "<br>";
+  pudDate = item.find("pubDate").text() + "<br>";
+
+  console.log(title);
+  console.log(link);
+  console.log(pubDate);
+
+
+  returnHtml += title;
+  returnHtml += link;
+  returnHtml += pubDate;
+
+  returnHtml += "</li>";
+
+  console.log(returnHtml);
+
+  return returnHtml;
 }
