@@ -2,7 +2,13 @@ $(function() {
   console.log('READER START');
 
   $('#search_feed').on("click", function() {
-    search($('#term').val());
+    var url_to_search = $('#term').val();
+
+    if(!url_to_search.match(/http:\/\//)) {
+      url_to_search = "http://"+url_to_search;
+    }
+
+    search(url_to_search);
   });
 });
 
