@@ -1,0 +1,422 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>BR-Mac.org</title>
+	<atom:link href="http://br-mac.org/feed/" rel="self" type="application/rss+xml" />
+	<link>http://br-mac.org</link>
+	<description>Mac, iPad e iPhone: menos rumores e mais informação</description>
+	<lastBuildDate>Thu, 25 Apr 2013 13:36:36 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.5.1</generator>
+		<item>
+		<title>Manipulando imagens no terminal do Mac com o utilitário nativo sips</title>
+		<link>http://br-mac.org/2013/04/manipulando-imagens-no-terminal-do-mac-com-o-utilitario-nativo-sips/</link>
+		<comments>http://br-mac.org/2013/04/manipulando-imagens-no-terminal-do-mac-com-o-utilitario-nativo-sips/#comments</comments>
+		<pubDate>Thu, 25 Apr 2013 13:36:36 +0000</pubDate>
+		<dc:creator>Augusto Campos</dc:creator>
+				<category><![CDATA[Mac]]></category>
+		<category><![CDATA[MacOSX]]></category>
+
+		<guid isPermaLink="false">http://br-mac.org/?p=4766</guid>
+		<description><![CDATA[O sips é um utilitário de linha de comando que vem instalado com o OS X, e coloca uma série de funções avançadas de manipulação de imagens ao alcance do seu Terminal ou dos seus scripts, sempre fazendo uso dos recursos nativos do sistema operacional. Não que faltem alternativas para isso: você pode realizar as [...]]]></description>
+				<content:encoded><![CDATA[<p>O <a href="http://developer.apple.com/library/mac/#documentation/Darwin/Reference/ManPages/man1/sips.1.html">sips</a> é um utilitário de linha de comando que vem instalado com o OS X, e coloca uma série de funções avançadas de manipulação de imagens ao alcance do seu Terminal ou dos seus scripts, sempre fazendo uso dos recursos nativos do sistema operacional.</p>
+<p>Não que faltem alternativas para isso: você pode realizar as mesmas funções por meio do Pré-Visualização, de Applescripts, de rotinas do Automator, por apps diversos ou mesmo por meio do tradicional ImageMagick, velho conhecido de muita gente que chegou ao Mac vindo de outro Unix ou do Linux.</p>
+<p>Mas para os fãs do Terminal ou dos scripts shell, o sips tem 2 vantagens inerentes: já vem instalado, e faz uso das rotinas de manipulação de imagem do sistema operacional (as mesmas disponíveis para apps ou para o Automator, por exemplo).</p>
+<div style="text-align:center; margin-bottom:1.8em; margin-top:0.4em;"><img src="http://static.efetividade.net/img/final-salto-259396.jpg" ></div>
+<!-- ximg http://static.efetividade.net/img/final-salto-259396.jpg -->
+<p>O uso básico do sips é bem simples, conforme expresso em sua <a href="http://developer.apple.com/library/mac/#documentation/Darwin/Reference/ManPages/man1/sips.1.html">man page</a>, mas para esclarecer vou incluir alguns exemplos de operações comuns, sempre exemplificando com a manipulação da imagem acima, da atleta russa Elena Isinbayeva na final da sua modalidade nos jogos de Beijing, e considerando que o arquivo dela esteja no diretório corrente do Terminal.</p>
+<p>A versão inicial da foto, acima, tem 500&#215;578 pixels (largura x altura), e o primeiro ponto a observar é que o sips trata as dimensões das imagens na ordem inversa e sem &#8220;x&#8221;, ou seja, para ele as dimensões da imagem acima são <tt>578 500</tt>.</p>
+<p>Antes de prosseguir, uma dica: todos os comandos a seguir podem ser aplicados a um lote de imagens de uma vez só, substituindo o nome de arquivo por uma expressão como <tt>*.jpg</tt> ou <tt>*.png</tt>.</p>
+<p>Vamos começar reduzindo as dimensões da imagem com segurança, ou seja, garantindo que a mesma proporção de largura e altura sejam mantidas. Para isso, usamos o parâmetro <tt>-Z</tt> seguido da altura máxima que a imagem deverá ter (e o sips se encarregará de descobrir como melhor ajustá-la). Por exemplo, se eu usar o comando <tt>sips -Z 450 final-salto.jpg</tt>, ele ajustará a a altura da imagem original para caber nos 450 pixels determinados, e ajustará a largura proporcionalmente à nova altura, assim:</p>
+<div style="text-align:center; margin-bottom:1.8em; margin-top:0.4em;"><img src="http://static.efetividade.net/img/final-salto-279178.jpg" ></div>
+<!-- ximg http://static.efetividade.net/img/final-salto-279178.jpg -->
+<p>Se preferir especificar a largura, e não a altura, troque o <tt>-Z</tt> por <tt>--resampleWidth</tt>. E se você desejar forçar determinadas dimensões, pode recorrer à versão minúscula do comando exemplificado acima, aí seguida de uma altura e largura. Por exemplo, o comando <tt>sips -z 450 450 final-salto.jpg</tt> transformaria a imagem acima em um quadrado, com perda das proporções originais.</p>
+<p>Outra operação comum é rotacionar uma imagem em 90 graus, para ajustar as fotos batidas &#8220;em pé&#8221; em câmeras que não ajustam a imagem automaticamente considerando a orientação. Não é o caso da imagem acima, mas vamos rotacioná-la mesmo assim, com o comando <tt>sips -r 90 final-salto.jpg</tt> , lembrando que o número de graus mencionado como parâmetro será aplicado no sentido contrário ao do relógio. O resultado:</p>
+<div style="text-align:center; margin-bottom:1.8em; margin-top:0.4em;"><img src="http://static.efetividade.net/img/final-salto-266631.jpg" ></div>
+<!-- ximg http://static.efetividade.net/img/final-salto-266631.jpg -->
+<p>Outra operação comum é a inversão, para corrigir imagens tiradas em espelhos. Para isso, basta usar o parâmetro <tt>-f</tt> seguido da especificação <tt>horizontal</tt> ou <tt>vertical</tt>. Vamos espelhar a nossa atleta horizontalmente com o comando <tt>sips -f horizontal final-salto.jpg</tt> para obter o resultado a seguir:</p>
+<div style="text-align:center; margin-bottom:1.8em; margin-top:0.4em;"><img src="http://static.efetividade.net/img/final-salto-279301.jpg" ></div>
+<!-- ximg http://static.efetividade.net/img/final-salto-279301.jpg -->
+<p>O sips faz bem mais operações: altera cores, inspeciona imagens, faz crop, pad e mais. Veja os detalhes na <a href="http://developer.apple.com/library/mac/#documentation/Darwin/Reference/ManPages/man1/sips.1.html">documentação online do sips</a>.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://br-mac.org/2013/04/manipulando-imagens-no-terminal-do-mac-com-o-utilitario-nativo-sips/feed/</wfw:commentRss>
+		<slash:comments>1</slash:comments>
+		</item>
+		<item>
+		<title>Desenvolvedor: instale o QLColorCode no seu Mac, e veja melhor seus fontes</title>
+		<link>http://br-mac.org/2013/04/desenvolvedor-instale-o-qlcolorcode-no-seu-mac-e-veja-melhor-seus-fontes/</link>
+		<comments>http://br-mac.org/2013/04/desenvolvedor-instale-o-qlcolorcode-no-seu-mac-e-veja-melhor-seus-fontes/#comments</comments>
+		<pubDate>Wed, 24 Apr 2013 11:46:45 +0000</pubDate>
+		<dc:creator>Augusto Campos</dc:creator>
+				<category><![CDATA[Mac]]></category>
+		<category><![CDATA[Open Source]]></category>
+		<category><![CDATA[Desenvolvimento]]></category>
+		<category><![CDATA[MacOSX]]></category>
+		<category><![CDATA[OpenSource]]></category>
+
+		<guid isPermaLink="false">http://br-mac.org/?p=4774</guid>
+		<description><![CDATA[Que tal ver código-fonte com sintaxe colorizada, diretamente no Finder? O QuickLook é o recurso do Finder (e do Spotlight, entre outros) que mostra automaticamente (ou quando você pressiona Espaço) o conteúdo de um arquivo, sem abrir nenhum app para isso. Ele funciona bem com imagens, com documentos e várias outras categorias de arquivos, mas [...]]]></description>
+				<content:encoded><![CDATA[<p>Que tal ver código-fonte com sintaxe colorizada, diretamente no Finder? O QuickLook é o recurso do Finder (e do Spotlight, entre outros) que mostra automaticamente (ou quando você pressiona Espaço) o conteúdo de um arquivo, sem abrir nenhum app para isso.</p>
+<p>Ele funciona bem com imagens, com documentos e várias outras categorias de arquivos, mas o seu comportamento default em relação a código-fonte em geral é exibi-lo como simples arquivos-texto:</p>
+<div style="text-align:center; margin-bottom:1.8em; margin-top:0.4em;"><img src="http://static.efetividade.net/img/sem-sintaxe-colorida-250935.jpeg" ></div>
+<!-- ximg http://static.efetividade.net/img/sem-sintaxe-colorida-250935.jpeg -->
+<p>Mas estamos no século XXI, e hoje até os visualizadores e editores mais simples conseguem oferecer o mais básico dos recursos de exibição de código-fonte: a colorização de acordo com a sintaxe.</p>
+<p>E é isso que o plugin <a href="https://code.google.com/p/qlcolorcode/">QLColorCode</a> oferece: colorização de sintaxe diretamente no QuickLook, facilitando as suas navegações pelos diretórios em busca daquela biblioteca há muito perdida.</p>
+<div style="text-align:center; margin-bottom:1.8em; margin-top:0.4em;"><img src="http://static.efetividade.net/img/xtra/PreviewShot-0-104755.2.png" title="PreviewShot-0-104755.2.png - fonte: qlcolorcode   A Quick Look plugin for source code with syntax highlighting   Google Project Hosting (https://code.google.com/p/qlcolorcode/) "></div>
+<!-- ximg http://static.efetividade.net/img/xtra/PreviewShot-0-104755.2.png -->
+<p>Após instalar o plugin, a exibição de código-fonte passa a funcionar no novo formato imediatamente, e fica como na imagem acima.</p>
+<p>O QLColorCode faz uso do <a href="http://www.andre-simon.de/index.html">Highlight</a>, o que lhe garante suporte a mais de 180 linguagens.</p>
+<p>Embora não haja uma interface visual de configuração do plugin, <a href="https://github.com/n8gray/QLColorCode/blob/master/ReadMe.txt">a documentação explica</a> como personalizar vários itens, incluindo cores, tamanho de fonte e mais.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://br-mac.org/2013/04/desenvolvedor-instale-o-qlcolorcode-no-seu-mac-e-veja-melhor-seus-fontes/feed/</wfw:commentRss>
+		<slash:comments>2</slash:comments>
+		</item>
+		<item>
+		<title>Up Next: como usar o recurso Próximos, do iTunes 11, para escolher melhor o que vai ouvir em seguida</title>
+		<link>http://br-mac.org/2013/04/up-next-como-usar-o-recurso-proximos-do-itunes-11-para-escolher-melhor-o-que-vai-ouvir-em-seguida/</link>
+		<comments>http://br-mac.org/2013/04/up-next-como-usar-o-recurso-proximos-do-itunes-11-para-escolher-melhor-o-que-vai-ouvir-em-seguida/#comments</comments>
+		<pubDate>Tue, 23 Apr 2013 10:10:31 +0000</pubDate>
+		<dc:creator>Augusto Campos</dc:creator>
+				<category><![CDATA[Apps]]></category>
+		<category><![CDATA[Mac]]></category>
+		<category><![CDATA[iTunes]]></category>
+		<category><![CDATA[MacOSX]]></category>
+
+		<guid isPermaLink="false">http://br-mac.org/?p=4770</guid>
+		<description><![CDATA[O iTunes 11 removeu o antigo recurso iTunes DJ e colocou em seu lugar a lista &#8220;Próximos&#8221;, ou &#8220;Up Next&#8221;. Eu era fã do iTunes DJ, mas a lista Próximos tem funcionalidade suficiente para merecer o seu uso, que aliás não é nada difícil. O funcionamento básico dela é similar ao de uma playlist à [...]]]></description>
+				<content:encoded><![CDATA[<p>O iTunes 11 removeu o antigo recurso iTunes DJ e colocou em seu lugar a lista &#8220;Próximos&#8221;, ou &#8220;Up Next&#8221;. Eu era fã do iTunes DJ, mas a lista <b>Próximos</b> tem funcionalidade suficiente para merecer o seu uso, que aliás não é nada difícil.</p>
+<p>O funcionamento básico dela é similar ao de uma playlist à qual você pode incorporar a qualquer momento músicas que deseje ouvir em seguida à música que está tocando no momento, ou na próxima vez que pressionar o Play.</p>
+<div style="text-align:center; margin-bottom:1.8em; margin-top:0.4em;"><img src="http://static.efetividade.net/img/proximos-itunes-267328.jpeg" ></div>
+<!-- ximg http://static.efetividade.net/img/proximos-itunes-267328.jpeg -->
+<p>Para inserir qualquer música da sua coleção na lista Próximos, basta clicar com o botão direito nela, e aí selecionar a opção &#8220;Adicionar às Seguintes&#8221; no menu. Ela vai ser inserida à frente do que você já estava ouvindo (por exemplo, um álbum ou uma playlist tradicional), e aí é só aguardar chegar a vez dela tocar – quando acabar, a programação anterior continuará automaticamente, sem interrupção ツ </p>
+<div style="text-align:center; margin-bottom:1.8em; margin-top:0.4em;"><img src="http://static.efetividade.net/img/upnext-266542.jpeg" ></div>
+<!-- ximg http://static.efetividade.net/img/upnext-266542.jpeg -->
+<p>Você pode ver o conteúdo atual da sua lista Próximos a qualquer momento, bastando clicar no ícone da lista, à direita no player do iTunes, como na imagem acima. </p>
+<div style="text-align:center; margin-bottom:1.8em; margin-top:0.4em;"><img src="http://static.efetividade.net/img/opcoes-itunes-250634.jpeg" ></div>
+<!-- ximg http://static.efetividade.net/img/opcoes-itunes-250634.jpeg -->
+<p>Quando o conteúdo da lista estiver sendo exibido na tela, você pode mudar a ordem das músicas (basta arrastá-las), removê-las ou mesmo ter acesso a opções adicionais sobre cada uma delas, como na imagem acima.</p>
+<p>Uma dica extra: as músicas vão sendo automaticamente retiradas da lista Próximos conforme vão sendo tocadas, mas a qualquer momento você pode ver um histórico (que mostra tudo que você ouviu recentemente, e não apenas o que esteve nos Próximos) pressionando o ícone do relógio no topo da própria lista Próximos, visível nas 2 imagens acima.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://br-mac.org/2013/04/up-next-como-usar-o-recurso-proximos-do-itunes-11-para-escolher-melhor-o-que-vai-ouvir-em-seguida/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Bateria do Mac: laboratório testa se dicas comuns para fazer durar mais funcionam mesmo</title>
+		<link>http://br-mac.org/2013/04/cacadores-de-mitos-laboratorio-testa-se-dicas-comuns-para-fazer-a-bateria-durar-mais-funcionam-mesmo/</link>
+		<comments>http://br-mac.org/2013/04/cacadores-de-mitos-laboratorio-testa-se-dicas-comuns-para-fazer-a-bateria-durar-mais-funcionam-mesmo/#comments</comments>
+		<pubDate>Mon, 22 Apr 2013 13:56:12 +0000</pubDate>
+		<dc:creator>Augusto Campos</dc:creator>
+				<category><![CDATA[Mac]]></category>
+		<category><![CDATA[powerbar]]></category>
+		<category><![CDATA[MacBook]]></category>
+		<category><![CDATA[MacOSX]]></category>
+
+		<guid isPermaLink="false">http://br-mac.org/?p=4785</guid>
+		<description><![CDATA[O número de lendas relacionadas a técnicas para aumentar a duração da carga da bateria cresce exponencialmente com o passar dos anos, e a o laboratório da MacWorld se armou de um medidor de consumo de energia e testou 8 delas, com conclusões às vezes surpreendentes. O primeiro dos testes já comprovou (ao menos para [...]]]></description>
+				<content:encoded><![CDATA[<p>O número de lendas relacionadas a técnicas para aumentar a duração da carga da bateria cresce exponencialmente com o passar dos anos, e a o laboratório da MacWorld se armou de um medidor de consumo de energia e testou 8 delas, com conclusões às vezes surpreendentes.</p>
+<div style="text-align:center; margin-bottom:1.8em; margin-top:0.4em;"><img src="http://static.efetividade.net/img/economia-energia-bateria-265866.jpg" ></div>
+<!-- ximg http://static.efetividade.net/img/economia-energia-bateria-265866.jpg -->
+<p>O primeiro dos testes já comprovou (ao menos para os equipamentos testados: um MacBook Pro e um iMac) algo que parece óbvio para muita gente: que notebooks consomem menos energia que desktops. Mas há um aspecto interessante aqui: isso vale para quando o MacBook em questão está 100% carregado e conectado à tomada, porque quando ele está em uso e ao mesmo tempo carregando a bateria, a diferença entre ele e o iMac foi apenas de 3,6%.</p>
+<p>O segundo teste também refutou parcialmente uma dica sempre repassada: a de que desligar o Bluetooth faz diferença considerável para prolongar a carga da bateria. A parte mais essencial da técnica (que é desligar os periféricos Bluetooth) faz mesmo grande diferença, mas simplesmente desligar o suporte a Bluetooth que não estava em uso fez diferença de apenas 0,1% no consumo medido. Conclusão similar foi obtida sobre a &#8220;dica&#8221; de desconectar fisicamente até mesmo periféricos desligados: a diferença obtida foi mínima, indicando que basta desligá-los.</p>
+<div style="text-align:center; margin-bottom:1.8em; margin-top:0.4em;"><img src="http://static.efetividade.net/img/xtra/mzl-104755.ftetusli.800x500-75.jpg" title="mzl-104755.ftetusli.800x500-75.jpg - fonte: mzl.ftetusli.800x500 75.jpg (800×500) (http://a1904.phobos.apple.com/us/r1000/089/Purple/80/aa/bb/mzl.ftetusli.800x500 75.jpg) "></div>
+<!-- ximg http://static.efetividade.net/img/xtra/mzl-104755.ftetusli.800x500-75.jpg -->
+<p>Já a dica de reduzir o brilho do monitor foi facilmente comprovada: reduzir o brilho à metade gerou redução de 29,8% no consumo, e reduzir ao mínimo gerou redução de 38,8%.</p>
+<p>A lenda de que não vale a pena desligar o computador diariamente (bastando deixá-lo em repouso) porque o consumo de energia para sua inicialização completa é maior do que a economia noturna foi refutada, embora a inicialização faça mesmo o consumo mais do que dobrar, e o modo de repouso tenha mesmo consumo baixo.</p>
+<p>Completando a série, a única conclusão que me surpreendeu, embora não devesse: os SSDs não necessariamente consomem menos energia que os HDs tradicionais. O SSD testado consumiu menos que o HD interno do iMac, mas mais do que o HD do MacBook.</p>
+<p>Veja os detalhes no artigo da MacWorld: &#8220;<a href="http://www.macworld.com/article/2035493/fact-or-fiction-eight-mac-energy-saving-techniques-tested.html#lsrc.twt_macworld">Fact or fiction: Eight Mac energy-saving techniques tested</a>&#8221;</p>
+]]></content:encoded>
+			<wfw:commentRss>http://br-mac.org/2013/04/cacadores-de-mitos-laboratorio-testa-se-dicas-comuns-para-fazer-a-bateria-durar-mais-funcionam-mesmo/feed/</wfw:commentRss>
+		<slash:comments>3</slash:comments>
+		</item>
+		<item>
+		<title>Trickster: mais produtividade no Mac com acesso rápido a seus arquivos recentes</title>
+		<link>http://br-mac.org/2013/04/trickster-mais-produtividade-no-mac-com-acesso-rapido-a-seus-arquivos-recentes/</link>
+		<comments>http://br-mac.org/2013/04/trickster-mais-produtividade-no-mac-com-acesso-rapido-a-seus-arquivos-recentes/#comments</comments>
+		<pubDate>Mon, 22 Apr 2013 10:29:09 +0000</pubDate>
+		<dc:creator>Augusto Campos</dc:creator>
+				<category><![CDATA[Apps]]></category>
+		<category><![CDATA[Mac]]></category>
+		<category><![CDATA[MacOSX]]></category>
+
+		<guid isPermaLink="false">http://br-mac.org/?p=4777</guid>
+		<description><![CDATA[O Trickster, cujo ícone é uma cartola de mágico, desempenha muito bem o seu truque da produtividade: colocar na ponta dos dedos a lista dos arquivos usados mais recentemente, de forma organizada e com filtros personalizáveis. Boa parte de nós abre mais de uma vez os mesmos arquivos ao longo dos dias, volta aos mesmos [...]]]></description>
+				<content:encoded><![CDATA[<p>O Trickster, cujo ícone é uma cartola de mágico, desempenha muito bem o seu truque da produtividade: colocar na ponta dos dedos a lista dos arquivos usados mais recentemente, de forma organizada e com filtros personalizáveis.</p>
+<p>Boa parte de nós abre mais de uma vez os mesmos arquivos ao longo dos dias, volta aos mesmos aplicativos ou documentos e&#8230; de vez em quando esquece onde eles estão, ou o nome deles.</p>
+<p>E é nisso que o Trickster ajuda: quando esquecemos, ele lembra. E mesmo quando não esquecemos, ele oferece acesso rápido (no meu caso, configurei para bastar pressionar Control+X) à lista de arquivos recentes, para você reabri-los, arrastá-los, inspecioná-los, etc.</p>
+<div style="text-align:center; margin-bottom:1.8em; margin-top:0.4em;"><img src="http://static.efetividade.net/img/trickster-app-267063.jpeg" ></div>
+<!-- ximg http://static.efetividade.net/img/trickster-app-267063.jpeg -->
+<p>A interface inicial do Trickster é a que você vê na imagem acima, destacando os arquivos que abri recentemente. Mas note que à esquerda há uma série de 10 botões: eles servem para alternar entre várias outras listas, conforme a sua demanda: apps mais recentemente usadas, arquivos de áudio, de imagem, documentos, etc.</p>
+<p>Essas listas são filtros, e você pode editá-los ou alterá-los como desejar, para que pesquise apenas em determinadas pastas, exclua outras, se restrinja a determinados tipos ou extensões de arquivos, etc.</p>
+<p>Outro recurso interessante são as flags: você pode sinalizar com uma bandeirinha qualquer arquivo na interface do Trickster, e um dos filtros da coluna lateral serve para mostrar apenas os arquivos marcados com ela – útil para deixar marcados os arquivos que sabemos que vamos voltar a usar em breve, por exemplo.</p>
+<p>Para cada arquivo está disponível também um menu de ações, incluindo &#8220;as de sempre&#8221; e algumas outras bem interessantes, como copiar o caminho completo do arquivo para a clipboard.</p>
+<p>A interface do Trickster é ligeiramente configurável: dá para escolher listar os arquivos em ordem cronológica ou alfabética, tornar a lista mais compacta ou mais detalhada, e mais alguns aspectos.</p>
+<p>Mas no meu caso a configuração default acabou sendo a escolhida, e tenho usado o Trickster várias vezes por hora, todos os dias, como complemento às funcionalidades do <a href="http://br-mac.org/2013/04/alfred-2-novo-recurso-workflows-da-show-de-produtividade-no-mac-veja-os-meus-preferidos/">Alfred</a> e do <a href="http://br-mac.org/2012/10/dropzone-o-novo-utilitario-indispensavel-do-meu-mac-agiliza-o-uso-do-sistema/">Dropzone</a>, especialmente.</p>
+<p>Assim como no caso do Alfred e do Dropzone, percebo no Trickster uma maneira mais ágil (ao menos para o meu caso de uso) e integrada de ter acesso a recursos que são disponibilizados pelo próprio sistema operacional – como no caso dessa <a href="http://br-mac.org/2012/10/arquivos-hoje-ontem/">busca de arquivos recentes via Spotlight</a>, ou mesmo de lançadores similares que podem ser ativados na Dock sem configurar nada, ou do menu &#8220;Abrir recentes&#8221; de vários apps.</p>
+<p>Para mim mais do que valeu o preço da versão completa, mas você pode verificar se ele se adequa ao seu estilo de uso por meio do <a href="http://www.apparentsoft.com/trickster">download gratuito no site do Trickster</a>.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://br-mac.org/2013/04/trickster-mais-produtividade-no-mac-com-acesso-rapido-a-seus-arquivos-recentes/feed/</wfw:commentRss>
+		<slash:comments>1</slash:comments>
+		</item>
+		<item>
+		<title>Alfred 2: novo recurso Workflows dá show de produtividade no Mac, veja os meus preferidos</title>
+		<link>http://br-mac.org/2013/04/alfred-2-novo-recurso-workflows-da-show-de-produtividade-no-mac-veja-os-meus-preferidos/</link>
+		<comments>http://br-mac.org/2013/04/alfred-2-novo-recurso-workflows-da-show-de-produtividade-no-mac-veja-os-meus-preferidos/#comments</comments>
+		<pubDate>Thu, 18 Apr 2013 14:00:16 +0000</pubDate>
+		<dc:creator>Augusto Campos</dc:creator>
+				<category><![CDATA[Apps]]></category>
+		<category><![CDATA[Mac]]></category>
+		<category><![CDATA[MacOSX]]></category>
+
+		<guid isPermaLink="false">http://br-mac.org/?p=4764</guid>
+		<description><![CDATA[O Alfred é um dos 5 utilitários indispensáveis em qualquer Mac que eu use, porque me permite operar o OS X sem tirar a mão do teclado, realizando minhas operações mais frequentes de forma bem mais eficiente do que arrastando o ponteiro do mouse, e sua versão 2 trouxe um novo recurso fundamental para reduzir [...]]]></description>
+				<content:encoded><![CDATA[<p>O <a href="http://www.alfredapp.com/">Alfred</a> é um dos 5 utilitários indispensáveis em qualquer Mac que eu use, porque me permite operar o OS X sem tirar a mão do teclado, realizando minhas operações mais frequentes de forma bem mais eficiente do que arrastando o ponteiro do mouse, e sua versão 2 trouxe um novo recurso fundamental para reduzir ainda mais o tempo entre decidir o que se quer fazer, comunicar essa intenção ao computador, e ver a tarefa completada: os workflows definidos pelo usuário.</p>
+<div style="text-align:center; margin-bottom:1.8em; margin-top:0.4em;"><img src="http://static.efetividade.net/img/alfred-252740.jpg" ></div>
+<!-- ximg http://static.efetividade.net/img/alfred-252740.jpg -->
+<p>O lançador Alfred tem uma variedade de funções, mas sua especialidade é localizar rapidamente o aplicativo ou documento que você quer abrir (logo aprendendo a priorizar os mais usados ou mais relevantes), conforme você digita os primeiros caracteres do seu nome. É possível navegar numa lista usando as setas ou atalhos, mas assim que o aplicativo ou documento certo estiver em primeiro na lista de localizados, é só apertar Enter e ele será aberto – e o Alfred é bom em colocar o item certo no início da lista.</p>
+<p>O Alfred é gratuito, embora se beneficie bastante de um add-on chamado PowerPack, que é pago. </p>
+<p>Sobre o Alfred <a href="http://br-mac.org/2011/08/alfred-mais-praticidade-para-comandar-o-seu-mac/">eu já escrevi anteriormente</a>, ele é uma solução interessante e popular para aqueles que gostam da interface gráfica mas não se furtam a adotar atalhos de teclado e opções de automação de suas rotinas.</p>
+<p>O Alfred 2 foi lançado no mês passado, e trouxe uma série de novidades, como o suporte a temas, novas maneiras de se integrar ao sistema operacional e de um recurso que para mim é sensacional: os workflows (disponível apenas para usuários do Powerpack).</p>
+<div style="text-align:center; margin-bottom:1.8em; margin-top:0.4em;"><img src="http://static.efetividade.net/img/alfred-workflow-261898.jpeg" ></div>
+<!-- ximg http://static.efetividade.net/img/alfred-workflow-261898.jpeg -->
+<p>Os workflows são fluxos de atividades definidos arrastando e conectando uma série de componentes (hotkey, comando, parâmetro, seleção de arquivo, ações diversas) de forma visual, que permitem automatizar (e acessar diretamente pelo Alfred) uma variedade de rotinas. </p>
+<p>Não é necessário ser programador para criá-los, mas os programadores se beneficiam devido ao suporte direto a uma variedade de linguagens de script (PHP, Ruby, Python, Perl, Applescript, Bash, Zsh) para criar (também dentro do Alfred) seus próprios componentes.</p>
+<div style="text-align:center; margin-bottom:1.8em; margin-top:0.4em;"><img src="http://static.efetividade.net/img/workflows-253260.jpeg" ></div>
+<!-- ximg http://static.efetividade.net/img/workflows-253260.jpeg -->
+<p>Eu mal comecei a explorar o potencial dos workflows, mas um pequeno conjunto deles, que colocam na ponta dos dedos e com uma interface unificada algumas tarefas disponíveis em outras áreas do OS X, já está incorporado à minha rotina diária. São eles:</p>
+<ul>
+<li>Last changed files: A lista do Spotlight dos arquivos mais recentemente alterados no sistema.
+<li>Top processes: Lista os processos que estão ocupando mais CPU ou memória, e permite encerrá-los ou limitar seu uso de CPU.
+<li>Clone Finder Window: abre uma cópia da janela do Finder que estiver em uso.
+<li>Recent Documents: A lista contendo os documentos mais recentemente abertos pelos aplicativos.
+<li>Recent Downloads: acesso rápido aos arquivos mais recentes da pasta de downloads.
+<li>Symbols: um dicionário de símbolos Unicode. Digite itens do nome (exemplo: &#8220;arrow right&#8221;) e veja os símbolos correspondentes, a partir de uma lista de 20.000 deles.
+<li>Favorites: permite manter uma lista de diretórios e arquivos favoritos, e acessá-los diretamente a qualquer momento.
+</ul>
+<p>Um deles (o Clone Finder Window) é de minha autoria, feito com ajuda de um pouco de Applescript. Pretendo criar outros nas próximas semanas, e possivelmente documentar o processo por aqui, para quem tiver interesse em fazer o mesmo.</p>
+<p>Instalar os workflows é bem fácil: basta fazer o download e dar um duplo clique, e o PowerPack se encarrega do resto. Você encontra centenas de opções (incluindo todos os da lista acima) <a href="http://www.alfredforum.com/forum/3-share-your-workflows/">no fórum oficial de workflows</a> e no <a href="http://www.alfredworkflow.com/">alfredworkflow.com</a>. Recomendo!</p>
+]]></content:encoded>
+			<wfw:commentRss>http://br-mac.org/2013/04/alfred-2-novo-recurso-workflows-da-show-de-produtividade-no-mac-veja-os-meus-preferidos/feed/</wfw:commentRss>
+		<slash:comments>2</slash:comments>
+		</item>
+		<item>
+		<title>Joysticks para iPad e iPhone: 10 opções interessantes &#8211; e disponíveis no DealExtreme</title>
+		<link>http://br-mac.org/2013/04/controles-para-jogos-no-ipad-e-iphone-10-opcoes-interessantes-e-disponiveis-no-dealextreme/</link>
+		<comments>http://br-mac.org/2013/04/controles-para-jogos-no-ipad-e-iphone-10-opcoes-interessantes-e-disponiveis-no-dealextreme/#comments</comments>
+		<pubDate>Wed, 17 Apr 2013 10:20:51 +0000</pubDate>
+		<dc:creator>Augusto Campos</dc:creator>
+				<category><![CDATA[iOS]]></category>
+		<category><![CDATA[powerbar]]></category>
+		<category><![CDATA[Gadgets]]></category>
+		<category><![CDATA[Hardware]]></category>
+		<category><![CDATA[iPad]]></category>
+		<category><![CDATA[iPhone]]></category>
+		<category><![CDATA[Jogos]]></category>
+
+		<guid isPermaLink="false">http://br-mac.org/?p=4753</guid>
+		<description><![CDATA[Opções vão da faixa dos R$ 10 aos R$ 150, e várias delas oferecem potencial de ganho na jogabilidade bastante considerável. Ontem escrevi sobre o Game D, projeto interessante de controle específico para jogar no iPad mini, e me ocorreu que nunca comentei aqui sobre vários dos controles para jogar no iPad e iPhone que [...]]]></description>
+				<content:encoded><![CDATA[<p>Opções vão da faixa dos R$ 10 aos R$ 150, e várias delas oferecem potencial de ganho na jogabilidade bastante considerável.</p>
+<p>Ontem <a href="http://br-mac.org/?p=4753">escrevi sobre o Game D</a>, projeto interessante de controle específico para jogar no iPad mini, e me ocorreu que nunca comentei aqui sobre vários dos controles para jogar no iPad e iPhone que já testei, ou que já considerei testar. </p>
+<p>Muitos deles podem ser encontrados com facilidade no <a href="http://dx.com/">DealExtreme</a> (veja mais detalhes no final deste artigo), portanto chegou a hora de corrigir essa omissão!</p>
+<p>Veremos a seguir controles baratinhos (que se prendem à tela por sucção), alguns controles &#8220;de griffe&#8221;, bem mais caros, e controles avançados genéricos (similares aos de videogames) – e começaremos por estes.</p>
+<h2>Controles para iPad e iPhone: os genéricos interessantes</h2>
+<p>A procedência desses genéricos pode não ser muito clara em alguns casos, mas as descrições são interessantes.</p>
+<div style="text-align:center; margin-bottom:1.8em; margin-top:0.4em;"><img src="http://static.efetividade.net/img/joystick-ipad-avitoy-ps3-251801.jpg" ></div>
+<!-- ximg http://static.efetividade.net/img/joystick-ipad-avitoy-ps3-251801.jpg -->
+<p>Começamos por este layout clássico do PS3, reproduzido no <a href="http://dx.com/p/avitoy-rechargeable-bluetooth-wireless-controller-for-iphone-ipod-touch-ipad-black-162995">controle bluetooth da Avitoy para iPad</a>, que tem 2 modos de operação, sendo um deles compatível com o iCade (funciona em <a href="http://www.thinkgeek.com/icadegames/">centenas de jogos</a> sem alterar nada no iPad ou iPhone) e o outro modo necessitando de jailbreak para poder ser usado.</p>
+<div style="text-align:center; margin-bottom:1.8em; margin-top:0.4em;"><img src="http://static.efetividade.net/img/controle-iphone-iplayer-255036.png" ></div>
+<!-- ximg http://static.efetividade.net/img/controle-iphone-iplayer-255036.png -->
+<p>O <a href="http://dx.com/p/e-020-iplayer-wireless-bluetooth-game-controller-for-iphone-ipad-itouch-series-black-178030">iPlayer E-020</a> aloja em seu suporte central (giratório) um iPhone 5 (aparentemente&#8230; ou será um iPod Touch?) mas, como é um controle Bluetooth, pode controlar qualquer outro modelo, e também o iPad, mesmo sem encaixá-los. O <a href="http://www.youtube.com/watch?v=p0nCy8XKr98">vídeo demonstrativo</a> parece animador, mas não encontrei confirmação de compatibilidade com jogos, embora chute que seja compatível com os mesmos do modelo acima – mas não apostaria US$ 40 nisso&#8230;</p>
+<div style="text-align:center; margin-bottom:1.8em; margin-top:0.4em;"><img src="http://static.efetividade.net/img/controle-bluetooth-ipad-257953.png" ></div>
+<!-- ximg http://static.efetividade.net/img/controle-bluetooth-ipad-257953.png -->
+<p>O <a href="http://dx.com/p/ipega-pg-9017-wireless-bluetooth-3-0-controller-for-ipad-iphone-smartphone-more-white-961190195">iPega PG-9017</a> é bem melhor documentado: é compatível com as <a href="http://www.thinkgeek.com/icadegames/">centenas de jogos que suportam o iCade</a>, e sua alça telescópica permite abrigar os iPhones e iPods Touch em geral. Ele usa Bluetooth, portanto também pode controlar o iPad, embora sem estar fixo a ele. </p>
+<h2>Controles &#8220;de griffe&#8221; para jogos do iPad e iPhone</h2>
+<p>Como exceção à prática de não mencionar a marca original de seus produtos, o DealExtreme (DX) inclui 3 controles para iPad projetados pela Duo, sendo 2 com marca própria e o terceiro levando a clássica marca Atari – todos fugindo ao típico preço baixo da loja, e com restrições sérias: cada um deles funciona apenas com uma pequena lista de jogos.</p>
+<div style="text-align:center; margin-bottom:1.8em; margin-top:0.4em;"><img src="http://static.efetividade.net/img/controle-jogos-ipad-iphone-duo-267085.png" ></div>
+<!-- ximg http://static.efetividade.net/img/controle-jogos-ipad-iphone-duo-267085.png -->
+<p>O primeiro deles é o <a href="http://dx.com/p/duo-2-4ghz-bluetooth-v2-1-edr-gamer-game-controller-stand-holder-for-ipad-black-2-x-aa-190180">Duo Gamer</a>, que se conecta via Bluetooth ao iPad, iPhone ou iPod Touch, e funciona exclusivamente para os jogos da Gameloft, incluindo títulos como N.O.V.A. 3, Asphalt 7: Heat, Order &#038; Chaos Online, Brothers in Arms 2: Global Front, Modern Combat 3: Fallen Nation, NFL Pro 2013, Real Soccer 2013 e Wild Blood. São 2 sticks analógicos, 1 direcional, 4 botões e 2 gatilhos.</p>
+<div style="text-align:center; margin-bottom:1.8em; margin-top:0.4em;"><img src="http://static.efetividade.net/img/controle-pinball-ipad-268725.png" ></div>
+<!-- ximg http://static.efetividade.net/img/controle-pinball-ipad-268725.png -->
+<p>O <a href="http://dx.com/p/duo-pinball-game-controller-for-ipad-black-blue-187127">Duo Pinball</a> é uma proposta que me atrai, e um dia vou acabar adquirindo, apesar de ser caro e limitadíssimo: promete compatibilidade apenas com 5 mesas de fliperama do jogo <a href="http://br-mac.org/2011/02/pinball-hd-meu-jogo-preferido-hoje-para-mac-ipad-e-iphone/">Pinball HD</a>. Ele se conecta via Bluetooth ao iPad, iPhone ou iPod Touch, e tem apenas 3 controles: lançar a bola, flipper esquerdo e flipper direito.</p>
+<div style="text-align:center; margin-bottom:1.8em; margin-top:0.4em;"><img src="http://static.efetividade.net/img/controle-atari-ipad-250285.png" ></div>
+<!-- ximg http://static.efetividade.net/img/controle-atari-ipad-250285.png -->
+<p>Fechando esta segunda parte da lista, um produto que eu não recomendo: o charmoso controle <a href="http://dx.com/p/atari-arcade-duo-powered-game-console-joystick-controller-for-ipad-4-more-black-white-red-184312">Atari <i>powered by Duo</i></a> se une ao iPad pelo conector físico (de 30 pinos) apenas na posição vertical, e promete compatibilidade apenas com os jogos do pacote <a href="http://br-mac.org/2011/04/ataris-greatest-hits-para-iphone-e-ipad-game-over-nao-recomendo/">Atari&#8217;s Greatest Hits</a> que, francamente, não me agradaram quando eu <a href="http://br-mac.org/2011/04/ataris-greatest-hits-para-iphone-e-ipad-game-over-nao-recomendo/">os experimentei</a>. </p>
+<h2>Joysticks para iPad e iPhone por sucção</h2>
+<p>Os joysticks por sucção aderem sobre a tela do iPad e iPhone, e funcionam simplesmente oferecendo uma maneira mais conveniente (e com feedback pelo tato) para operar os joysticks virtuais on-screen oferecidos pelos jogos, que nem precisam ficar sabendo que você está usando um acessório. Eles não têm partes eletrônicas, e são bem mais baratos.</p>
+<div style="text-align:center; margin-bottom:1.8em; margin-top:0.4em;"><img src="http://static.efetividade.net/img/xtra/pd_fling_ipad_angle_ice_zoom.jpg" ></div>
+<!-- ximg http://static.efetividade.net/img/xtra/pd_fling_ipad_angle_ice_zoom.jpg -->
+<p>Eu já <a href="http://br-mac.org/2011/05/fling-joystick-para-o-ipad-testado-e-aprovado/">testei e aprovei o Fling</a>, da foto acima, e o mesmo está presente no DX (sem menção à marca original na descrição) em vários modelos diferentes, incluindo o  <a href="http://dx.com/p/game-controllers-analog-joystick-for-ipad-blue-transparent-81065">Fling para iPad</a> e o <a href="http://dx.com/p/game-controller-dual-analog-joysticks-for-ipad-ipad-2-pair-115462">Fling mini para iPhone</a>. Seu mecanismo lembra uma mola plástica, o que garante o retorno automático à posição central, bastante prático.</p>
+<div style="text-align:center; margin-bottom:1.8em; margin-top:0.4em;"><img src="http://static.efetividade.net/img/tela-darwin-2013-04-15-702-258806.png" ></div>
+<!-- ximg http://static.efetividade.net/img/tela-darwin-2013-04-15-702-258806.png -->
+<p>Eu já testei e gostei do Joystick-IT, basicamente um controle adesivo que se fixa à parte central dos controles virtuais exibidos na tela, e permite um controle bem intuitivo, embora naturalmente sem retorno automático à posição central. Ele está presente no DX em 2 versões &#8220;anônimas&#8221;: <a href="http://dx.com/p/aluminum-alloy-joystick-for-ipad-ipad-2-iphone-3g-iphone-4-samsung-p1000-black-72977">para iPad</a> e <a href="http://dx.com/p/aluminum-alloy-joystick-for-ipad-ipod-iphone-4-blue-113285">para iPhone</a>.</p>
+<div style="text-align:center; margin-bottom:1.8em; margin-top:0.4em;"><img src="http://static.efetividade.net/img/tela-darwin-2013-04-15-702-258669.png" ></div>
+<!-- ximg http://static.efetividade.net/img/tela-darwin-2013-04-15-702-258669.png -->
+<p>Este <a href="http://dx.com/p/game-controller-joysticks-for-iphone-ipad-tablets-more-black-transparent-2-pcs-189757">modelo bem mais discreto</a> oferece funcionalidade similar.</p>
+<div style="text-align:center; margin-bottom:1.8em; margin-top:0.4em;"><img src="http://static.efetividade.net/img/xtra/THUMBIES-button-for-iPhone-iPod-10-104755.jpg" title="THUMBIES-button-for-iPhone-iPod-10-104755.jpg - fonte: THUMBIES button for iPhone iPod 10.jpg (660×460) (http://1.bp.blogspot.com/ LXRfX KMOok/Tt34D5TEQQI/AAAAAAAAApY/1GuxjKGkN4E/s1600/THUMBIES button for iPhone iPod 10.jpg) "></div>
+<!-- ximg http://static.efetividade.net/img/xtra/THUMBIES-button-for-iPhone-iPod-10-104755.jpg -->
+<p>Fechando a lista, os Thumbies, que são uma abordagem ligeiramente diferente para a mesma ideia, e podem ser encontrados no DX em <a href="http://dx.com/p/touchscreen-game-controllers-joypad-joystick-buttons-for-iphone-4-55537">um modelo com 2 direcionais</a> e em <a href="http://dx.com/p/touchscreen-game-controllers-joypad-joystick-buttons-for-iphone-4-55536">um modelo com apenas um direcional</a>.</p>
+<h2>Por que DealExtreme?</h2>
+<p>Duas das dificuldades de brasileiros na hora de obter acessórios para seus eletrônicos são a ausência de disponibilidade deles no mercado nacional e o preço enorme quando estão disponíveis. O <a href="http://dx.com/">DealExtreme</a> é uma das alternativas, com sua variedade gigantesca de produtos a preços variados, e de origem frequentemente duvidosa &#8211; o risco é de quem compra, e frequentemente o produto não é descrito como sendo autorizado pelo detentor do registro ou patente relevante.</p>
+<p>Os preços costumam ser baixos (mas nem sempre), e é fácil encontrar relatos de sucesso de brasileiros que compram lá, com prazos de entrega que acabam variando entre 3 semanas e 3 meses. E, naturalmente, sujeitos aos riscos de toda transação e entrega internacionais, especialmente nos casos em que aparentemente não se trata de produtos autorizados pelo projetista original. </p>
+<p>Avalie com cuidado antes de decidir sua compra, e não esqueça de verificar se o mesmo produto não está disponível em outros fornecedores com condições melhores e situação de propriedade intelectual melhor esclarecida!</p>
+]]></content:encoded>
+			<wfw:commentRss>http://br-mac.org/2013/04/controles-para-jogos-no-ipad-e-iphone-10-opcoes-interessantes-e-disponiveis-no-dealextreme/feed/</wfw:commentRss>
+		<slash:comments>1</slash:comments>
+		</item>
+		<item>
+		<title>Game D: o controle para jogos que eu quero no meu iPad mini</title>
+		<link>http://br-mac.org/2013/04/game-d-o-controle-para-jogos-que-eu-quero-no-meu-ipad-mini/</link>
+		<comments>http://br-mac.org/2013/04/game-d-o-controle-para-jogos-que-eu-quero-no-meu-ipad-mini/#comments</comments>
+		<pubDate>Tue, 16 Apr 2013 13:00:49 +0000</pubDate>
+		<dc:creator>Augusto Campos</dc:creator>
+				<category><![CDATA[iOS]]></category>
+		<category><![CDATA[Gadgets]]></category>
+		<category><![CDATA[Hardware]]></category>
+		<category><![CDATA[iPad]]></category>
+		<category><![CDATA[Jogos]]></category>
+
+		<guid isPermaLink="false">http://br-mac.org/?p=4750</guid>
+		<description><![CDATA[Controle Game D traz 4 direcionais mais 6 botões, todos físicos, funciona também como capa e pode ser preso magneticamente ao iPad mini. Um dos primeiros artigos aqui do BR-Mac foi sobre minha insatisfação com os &#8220;joysticks virtuais&#8221; que jogos de ação para o iPhone e o iPad colocam em suas telas. Alternativas surgiram (eu [...]]]></description>
+				<content:encoded><![CDATA[<p>Controle Game D traz 4 direcionais mais 6 botões, todos físicos, funciona também como capa e pode ser preso magneticamente ao iPad mini.</p>
+<p>Um dos primeiros artigos aqui do BR-Mac foi sobre minha insatisfação com os &#8220;joysticks virtuais&#8221; que jogos de ação para o iPhone e o iPad colocam em suas telas. Alternativas surgiram (eu uso o <a href="http://br-mac.org/2011/05/fling-joystick-para-o-ipad-testado-e-aprovado/">Fling para iPad</a> e gosto), e a própria implementação dos controles na tela melhorou nos últimos 2 anos, mas continua a haver espaço para controles &#8220;de verdade&#8221;.</p>
+<p><iframe src="http://player.vimeo.com/video/63740363?title=0&amp;byline=0&amp;portrait=0&amp;color=ffffff" width="680" height="383" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe></p>
+<p>E um controle <i>de verdade</i>, mas adaptado especialmente ao iPad mini, é o que promete o Game D, nome (provisório) do produto que a Techdy projetou e pretende produzir até agosto.</p>
+<div style="text-align:center; margin-bottom:1.8em; margin-top:0.4em;"><img src="http://static.efetividade.net/img/tela-darwin-2013-04-15-702-263417.png" ></div>
+<!-- ximg http://static.efetividade.net/img/tela-darwin-2013-04-15-702-263417.png -->
+<p>A idéia é legal: quando não está em uso, ele se prende magneticamente ao iPad mini como se fosse uma Smart Cover, e quando está em uso ele tem uma ranhura para segurar o iPad horizontal ou verticalmente como um apoio, bem como prender-se magneticamente à sua parte traseira para permitir que os jogadores mais fortes o segurem como se fosse um Game Boy gigante, como na imagem abaixo.</p>
+<div style="text-align:center; margin-bottom:1.8em; margin-top:0.4em;"><img src="http://static.efetividade.net/img/cdesign3-4-257141.jpg" ></div>
+<!-- ximg http://static.efetividade.net/img/cdesign3-4-257141.jpg -->
+<p>O modelo básico custará US$ 39 para quem encomendar previamente, traz botões direcionais, 4 botões de controle e mais os botões Start/Select. Existe também um modelo Pro, que inclui iluminação dos botões, feedback vibratório e 2 gamepads analógicos, a US$ 59. Ele já nasce compatível com todos os jogos que suportam o <a href="http://en.wikipedia.org/wiki/ICade">iCade</a>, mas a Techdy promove disponibilizar uma biblioteca gratuita para desenvolvedores de jogos que pretendam suportá-lo de forma específica.</p>
+<div style="text-align:center; margin-bottom:1.8em; margin-top:0.4em;"><img src="http://static.efetividade.net/img/xtra/webdesign1-1-104755.jpg" title="webdesign1-1-104755.jpg - fonte: webdesign1 1 | TechCrunch (http://techcrunch.com/2013/04/11/with the game d techdy hopes to fund and build an open source game controller case for ipad mini/webdesign1 1/) "></div>
+<!-- ximg http://static.efetividade.net/img/xtra/webdesign1-1-104755.jpg -->
+<p>Vários detalhes, incluindo as opções de cores e até o nome definitivo do produto, ainda estão pendentes de definição e serão decididos conforme avançar o recém-iniciado <a href="http://techdy.com/projects/campaigns/project-game-d/">período de pré-venda/reserva</a> que definirá se o produto chegará mesmo a ser produzido.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://br-mac.org/2013/04/game-d-o-controle-para-jogos-que-eu-quero-no-meu-ipad-mini/feed/</wfw:commentRss>
+		<slash:comments>1</slash:comments>
+		</item>
+		<item>
+		<title>&#8220;Corrija&#8221; as teclas Home, End, Page Up e Page Down do seu Mac</title>
+		<link>http://br-mac.org/2013/04/corrija-as-teclas-home-end-page-up-e-page-down-do-seu-mac/</link>
+		<comments>http://br-mac.org/2013/04/corrija-as-teclas-home-end-page-up-e-page-down-do-seu-mac/#comments</comments>
+		<pubDate>Fri, 12 Apr 2013 10:18:40 +0000</pubDate>
+		<dc:creator>Augusto Campos</dc:creator>
+				<category><![CDATA[Mac]]></category>
+		<category><![CDATA[MacOSX]]></category>
+
+		<guid isPermaLink="false">http://br-mac.org/?p=4746</guid>
+		<description><![CDATA[Quem chegou ao Mac vindo de outras plataformas, como o Windows ou o Linux, pode passar muito tempo estranhando o comportamento das teclas Home, End, Page Up e Page Down (ou Fn pressionada em conjunto com ⬅, ➡, ⬆ e ⬇, nos MacBooks) no OS X: ao invés de mover o cursor para o começo [...]]]></description>
+				<content:encoded><![CDATA[<p>Quem chegou ao Mac vindo de outras plataformas, como o Windows ou o Linux, pode passar muito tempo estranhando o comportamento das teclas Home, End, Page Up e Page Down (ou Fn pressionada em conjunto com ⬅, ➡, ⬆ e ⬇, nos MacBooks) no OS X: ao invés de <i>mover o cursor</i> para o começo ou final da linha, uma tela acima ou uma tela abaixo, como estamos acostumados, elas fazem algo bem diferente:</p>
+<ul>
+<li>Home: desloca a janela de visualização até a primeira linha do texto
+<li>End: desloca a janela de visualização até a última linha do texto
+<li>Page Up: desloca a janela de visualização uma tela acima
+<li>Page Down: desloca a janela de visualização uma tela abaixo
+</ul>
+<p>Em todos os 4 casos acima, a janela de visualização é deslocada <b>sem mover o cursor/ponto de inserção</b>, em um comportamento nitidamente planejado para ser usado por pessoas que usam o mouse como auxiliar constante na tarefa de composição.</p>
+<div style="text-align:center; margin-bottom:1.8em; margin-top:0.4em;"><img src="http://static.efetividade.net/img/bbedit-269854.png" ></div>
+<!-- ximg http://static.efetividade.net/img/bbedit-269854.png -->
+<p>Em alguns casos (como o do <a href="http://br-mac.org/2012/05/editor-de-textos-para-mac-bbedit-10-1-2/">BBEdit, meu editor de texto preferido</a>), esse comportamento é configurável, como você pode ver na tela acima.</p>
+<p>Na maioria dos demais casos, a movimentação do cursor segue cegamente o comportamento definido pelo sistema operacional, alterando profundamente o funcionamento dessas teclas fundamentais para a produtividade na edição.</p>
+<p>O OS X não oferece a alternativa de alterar esse comportamento nas Preferências, mas felizmente é possível alterar essa configuração da forma clássica: basta criar um arquivo <tt>~/Library/KeyBindings/DefaultKeyBinding.dict</tt> (ou /Users/<i>[seu login]</i>/Library/KeyBindings/DefaultKeyBinding.dict – crie o diretório se necessário) e incluir nele as seguintes linhas:</p>
+<pre>{
+/* home */
+"\UF729" = "moveToBeginningOfLine:";
+"$\UF729" = "moveToBeginningOfLineAndModifySelection:";
+
+/* end */
+"\UF72B" = "moveToEndOfLine:";
+"$\UF72B" = "moveToEndOfLineAndModifySelection:";
+
+/* page up/down */
+"\UF72C" = "pageUp:";
+"\UF72D" = "pageDown:";
+
+/* Cmd-Left */
+"@\UF702" = "moveToBeginningOfLine:";
+"$@\UF702" = "moveToBeginningOfLineAndModifySelection:";
+
+/* Cmd-Right */
+"@\UF703" = "moveToEndOfLine:";
+"$@\UF703" = "moveToEndOfLineAndModifySelection:";
+}
+</pre>
+<p>Pronto: a partir da próxima execução dos seus aplicativos que fazem uso do mapeamento de teclas default do sistema operacional, eles irão tratar as teclas Home, End, Page Up e Page Down (ou Fn pressionada em conjunto com ⬅, ➡, ⬆ e ⬇, nos MacBooks) da forma como você se acostumou há décadas, e de brinde as combinações ⌘+⬅ e ⌘+➡ vão passar a operar como se fossem Home e End. Ah, e quando usadas em conjunto com a tecla Shift, as teclas Home e End modificam as seleções da forma tradicional também.</p>
+<h2>No Terminal</h2>
+<p>Se você se interessa por configurar itens a partir de arquivos-texto e por modificar o comportamento do teclado, é grande a probabilidade de você ser usuário também do Terminal, e neste caso você irá notar que as alterações acima não têm o mesmo efeito lá.</p>
+<p>Mas, graças a <a href="http://phatness.com/2007/08/fix-home-and-end-keys-on-mac-os-x/">um artigo clássico</a> indicado pelo <a href="https://twitter.com/fzero">Fábio FZero</a>, descobri qual a configuração necessária para essas teclas funcionarem como no tempo em que eu usava um Terminal especialmente bem configurado no Linux.</p>
+<p>A configuração é em duas partes, sendo que a primeira ocorre nas Preferências do app Terminal (basta pressional ⌘+, quando estiver usando o Terminal), aba Teclado.</p>
+<div style="text-align:center; margin-bottom:1.8em; margin-top:0.4em;"><img src="http://static.efetividade.net/img/tela-darwin-2013-04-11-702-251888.jpg" ></div>
+<!-- ximg http://static.efetividade.net/img/tela-darwin-2013-04-11-702-251888.jpg -->
+<p>Na aba Teclado, altere as teclas abaixo para que fiquem com a ação &#8220;<b>enviar string ao shell</b>&#8221; e o conteúdo a seguir:</p>
+<ul>
+<li>Início: \033[1~
+<li>Fim: \033[4~
+<li>Avançar página: \033[6~
+<li>Retroceder página: \033[5~
+</ul>
+<p>Se tiver dificuldade para digitar os códigos, simplesmente copie e cole a partir da lista acima.</p>
+<p>Em seguida, para completar, edite (ou crie) um arquivo <tt>~/.inputrc</tt> com o seguinte conteúdo:</p>
+<pre>
+"\e[1~": beginning-of-line
+"\e[4~": end-of-line
+"\e[5~": history-search-backward
+"\e[6~": history-search-forward
+"\e[3~": delete-char
+"\e[2~": quoted-insert
+"\e[5C": forward-word
+"\e[5D": backward-word
+"\e\e[C": forward-word
+"\e\e[D": backward-word
+set completion-ignore-case On
+</pre>
+<p>E pronto: na próxima aba ou terminal que você abrir, as teclas Home e End deslocarão o cursor para o início e final da linha, Option+setas deslocarão o cursor de palavra em palavra, e Page Up e Page Down farão pesquisa no histórico (por exemplo, digite <tt>ls</tt> e Page Up, e você verá os últimos comandos ls que constam no seu histórico).</p>
+]]></content:encoded>
+			<wfw:commentRss>http://br-mac.org/2013/04/corrija-as-teclas-home-end-page-up-e-page-down-do-seu-mac/feed/</wfw:commentRss>
+		<slash:comments>8</slash:comments>
+		</item>
+		<item>
+		<title>The Walking Dead: Jogo para iPad e iPhone com descontão</title>
+		<link>http://br-mac.org/2013/04/the-walking-dead-jogo-para-ipad-e-iphone-com-descontao/</link>
+		<comments>http://br-mac.org/2013/04/the-walking-dead-jogo-para-ipad-e-iphone-com-descontao/#comments</comments>
+		<pubDate>Mon, 01 Apr 2013 10:24:30 +0000</pubDate>
+		<dc:creator>Augusto Campos</dc:creator>
+				<category><![CDATA[Apps]]></category>
+		<category><![CDATA[iOS]]></category>
+		<category><![CDATA[iPad]]></category>
+		<category><![CDATA[iPhone]]></category>
+		<category><![CDATA[Jogos]]></category>
+		<category><![CDATA[Promoção]]></category>
+
+		<guid isPermaLink="false">http://br-mac.org/?p=4743</guid>
+		<description><![CDATA[O jogo The Walking Dead (para iPad, iPhone, Mac e outras plataformas) lembra tanto o seriado homônimo que é até mesmo apresentado em uma temporada de 5 episódios, todos lançados ao longo de 2012, cada um trazendo seu capítulo (jogável, claro) da história. Mas ele não é baseado diretamente no seriado, e sim nas histórias [...]]]></description>
+				<content:encoded><![CDATA[<p>O jogo The Walking Dead (para iPad, iPhone, Mac e outras plataformas) lembra tanto o seriado homônimo que é até mesmo apresentado em uma temporada de 5 episódios, todos lançados ao longo de 2012, cada um trazendo seu capítulo (jogável, claro) da história.</p>
+<p>Mas ele não é baseado diretamente no seriado, e sim nas histórias em quadrinhos que o originaram, e cujo visual é facilmente reconhecível no jogo – o fato de Robert Kirkman, o criador original da história, ter supervisionado o desenvolvimento do jogo certamente contribuiu para isso.</p>
+<div style="text-align:center; margin-bottom:1.8em; margin-top:0.4em;"><img src="http://static.efetividade.net/img/xtra/WalkingDead-iPhone-1-104755.png" title="WalkingDead-iPhone-1-104755.png - fonte: WalkingDead iPhone 1.png (743×381) (http://www.theiospost.com/storage/WalkingDead iPhone 1.png?  SQUARESPACE CACHEVERSION=1343283044188) "></div>
+<!-- ximg http://static.efetividade.net/img/xtra/WalkingDead-iPhone-1-104755.png -->
+<p>Naturalmente, tanto os quadrinhos quanto o seriado e o jogo retratam um mesmo universo, centrado no período após o apocalipse zumbi, em que os poucos sobreviventes precisam colaborar entre si, e às vezes combater uns aos outros, para chegar a ver o dia seguinte.</p>
+<p>O personagem central do videogame é Lee Everett, um professor universitário condenado por assassinato e que, após a chegada dos zumbis, resgata e assume a tarefa de cuidar da menina Clementine. </p>
+<p>Mas personagens que os fãs do seriado conhecem bem também aparecem em episódios do jogo, incluindo o velho fazendeiro Hershel e o oriental especialista em suprimentos Glenn. Ao longo do jogo, são revelados detalhes interessantes da trama, inclusive o que levou Glenn a ir para Atlanta (onde o xerife Rick o encontra no final do primeiro episódio do seriado), e como foi que o filho do velho Hershell virou zumbi (com participação do jogador&#8230;) e acabou sendo trancado no armazém da fazenda.</p>
+<p>O jogo fez grande sucesso, recebeu dezenas de premiações em 2012, e uma nova temporada (com um novo app, claro&#8230;) já está prometida para 2013.</p>
+<div style="text-align:center; margin-bottom:1.8em; margin-top:0.4em;"><img src="http://static.efetividade.net/img/walkingdead-273587.png" ></div>
+<!-- ximg http://static.efetividade.net/img/walkingdead-273587.png -->
+<p>E se você ainda não jogou, aproveite: a versão para iPad (2 ou superior) e iPhone (4 ou superior) está com desconto de 30% a 40%, dependendo se você prefere comprar um episódio por vez, ou os 4 de uma vez (o episódio 1 é grátis e vem junto com o app). </p>
+<p>A promoção ainda vai durar uma semana, e recomendo: <a href="https://itunes.apple.com/us/app/walking-dead-the-game/id524731580?mt=8">Walking Dead: The Game</a>, na App Store dos EUA (<a href="http://br-mac.org/2011/07/como-criar-conta-do-itunes-e-app-store-sem-cartao-de-credito/">crie sua conta</a> se necessário).</p>
+<p>E se você se liga na série, outro app a considerar é o <a href="https://itunes.apple.com/br/app/the-walking-dead/id395985060?mt=8">The Walking Dead</a>, que não é jogo e nem está em promoção: ele traz o primeiro episódio da história em quadrinhos que deu origem ao seriado e ao jogo, e permite comprar e ler os demais. </p>
+]]></content:encoded>
+			<wfw:commentRss>http://br-mac.org/2013/04/the-walking-dead-jogo-para-ipad-e-iphone-com-descontao/feed/</wfw:commentRss>
+		<slash:comments>2</slash:comments>
+		</item>
+	</channel>
+</rss>
+
+<!-- Dynamic page generated in 1.703 seconds. -->
+<!-- Cached page generated by WP-Super-Cache on 2013-04-27 11:00:08 -->
