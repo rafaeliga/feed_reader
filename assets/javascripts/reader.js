@@ -1,6 +1,8 @@
 $(function() {
   console.log('READER START');
 
+  get_urls()
+
   $('#search_feed').on("click", function() {
     var url_to_search = $('#term').val();
 
@@ -12,7 +14,13 @@ $(function() {
   });
 });
 
+function message(val) {
+  console.log(val);
+}
+
 function search(url) {
+  save_feed(url);
+
   $.ajax({
     type: 'GET',
     url: url,
@@ -49,4 +57,21 @@ function show_item_from_feed(xml) {
   });
 
   $divchannels.html(appendHtml);
+}
+
+function save_feed(url) {
+  var urls = [{url:url}];
+
+  chrome.storage.sync.set({'feed_urls': [urls]}, function() {
+    message('URLs saved');
+  });
+}
+
+function get_urls() {
+  chrome.storage.sync.get('feed_urls', function(items) {
+    $.each(items['feed_urls'], function(key, value) {
+      message(key)
+      message(value)
+    })
+  });
 }
