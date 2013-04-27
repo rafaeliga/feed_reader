@@ -19,8 +19,6 @@ function message(val) {
 }
 
 function search(url) {
-  save_feed(url);
-
   $.ajax({
     type: 'GET',
     url: url,
@@ -35,7 +33,8 @@ function search(url) {
         search(rss_link)
 
       } else if (content_type.match(/xml/)) {
-        show_item_from_feed(data);
+        console.log('XML parse')
+        show_item_from_feed(url, data);
       }
     },
     error: function (request, textStatus, errorThrown) {
@@ -45,7 +44,7 @@ function search(url) {
   });
 }
 
-function show_item_from_feed(xml) {
+function show_item_from_feed(url, xml) {
   $xml = $( xml );
   $channel = $xml.find( "channel" )
   $divchannels = $("#channels");
@@ -54,19 +53,28 @@ function show_item_from_feed(xml) {
   appendHtml += "<a >"
   appendHtml += " <ul>"
 
+  var items = [];
+
   $channel.find("item").each( function(){
     
     appendHtml += fetchItemAsHTML($(this));
+
+    var item = {};
+    item['title'] = $(this).find("title").text();
+    item['readed'] = false;
+    items.push(item);
   });
 
   appendHtml += "</ul>"
   appendHtml += "</a>"
   $divchannels.html(appendHtml);
+
+  save_feed(url, items);
 }
 
 
 function fetchItemAsHTML(item){
-  console.log(item);
+  // console.log(item);
   var returnHtml = "<li>";
 
   var title = "";
@@ -77,9 +85,9 @@ function fetchItemAsHTML(item){
   link = item.find("link").text() + "<br>";
   pudDate = item.find("pubDate").text() + "<br>";
 
-  console.log(title);
-  console.log(link);
-  console.log(pubDate);
+  // console.log(title);
+  // console.log(link);
+  // console.log(pubDate);
 
 
   returnHtml += title;
@@ -93,17 +101,22 @@ function fetchItemAsHTML(item){
   return returnHtml;
 }
 
-function save_feed(url) {
-  var urls = [{url:url}];
+function save_feed(url, items) {
+  var urls = [
+              {
+                feed_url:url, 
+                items: items
+              }
+             ];
 
-  chrome.storage.sync.set({'feed_urls': [urls]}, function() {
+  chrome.storage.local.set({'feeds': [urls]}, function() {
     message('URLs saved');
   });
 }
 
 function get_urls() {
-  chrome.storage.sync.get('feed_urls', function(items) {
-    $.each(items['feed_urls'], function(key, value) {
+  chrome.storage.local.get('feeds', function(items) {
+    $.each(items['feeds'], function(key, value) {
       message(key)
       message(value)
     })
