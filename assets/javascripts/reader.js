@@ -18,18 +18,6 @@ $(function() {
     search(url_to_search);
   });
 
-
-  $('.show_feed').on("click", function() {
-    e.stopImmediatePropagation();
-    e.preventDefault();
-
-    message('lakdgnbn')
-    message(event)
-    show_content($(this).data('content'), $(this).data('media-url'));
-
-    return false;
-  });
-
 });
 
 
@@ -149,21 +137,14 @@ function get_urls() {
       if(item['items'].length > 0) {
         $.each(item['items'], function(index, item) {
           if (item['readed'] == false) {
-            $('#unread ul').append('<li><a href="#show_feed_'+item['timestamp']+'" class="show_feed">'+item['title']+'</a></li>');
-            $('body').append('<div data-role="page" id="show_feed_'+item['timestamp']+'" data-theme="a">'+
-                              +'<div data-role="header">'+
-                                +'<div data-role="navbar">'+
-                                  +'<ul>'+
-                                    +'<li><a href="#settings_page">Settings</a></li>'+
-                                    +'<li><a href="#show_all_page">Show All</a></li>'+
-                                    +'<li><a href="#show_starred_page">Show Starred</a></li>'+
-                                    +'<li><a href="#show_unread">Show Unread</a></li>'+
-                                    +'<li><a href="#show_feed">Add Feed</a></li>'+
-                                  +'</ul>'+
-                                +'</div>'+
-                              +'</div>'+
-                              +'<div data-role="content">'+item['content']+' -------- '+item['media_url']+'</div>'+
-                            +'</div>');
+            $('#unread ul').append('<li><a href="#show_feed">'+item['title']+'</a></li>');
+
+            if(index == 1) {
+              $('#feed_content').html(item['content']);
+              $('#feed_title').html(item['title']);
+              $('#audio_src').attr('src', item['media_url']);
+              $('#audio_tag').load();
+            }
           }
         })
       }

@@ -117,7 +117,28 @@
       </div>
       <div data-role="content">
         <h2>Show Feed....</h2>
+      </div>
+    </div>
+
+    <div data-role="page" id="show_feed" data-theme="a">
+      <div data-role="header">
+        <div data-role="navbar">
+          <ul>
+            <li><a href="#settings_page">Settings</a></li>
+            <li><a href="#show_all_page">Show All</a></li>
+            <li><a href="#show_starred_page">Show Starred</a></li>
+            <li><a href="#show_unread">Show Unread</a></li>
+            <li><a href="#" class="open_dialog">Add Feed</a></li>
+          </ul>
+        </div><!-- /navbar -->
+      </div>
+      <div data-role="content">
+        <h2 id="feed_title"></h2>
         <div id="feed_content"></div>
+        <br />
+        <audio id="audio_tag" controls>
+          <source id="audio_src" src="" type="audio/mp3">
+        </audio>
       </div>
     </div>
 
