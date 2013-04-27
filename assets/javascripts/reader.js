@@ -55,7 +55,7 @@ function show_item_from_feed(xml) {
   appendHtml += " <ul>"
 
   $channel.find("item").each( function(){
-    // appendHtml += $(this).find("title").text() + "<br><br>";
+    
     appendHtml += fetchItemAsHTML($(this));
   });
 
