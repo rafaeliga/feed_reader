@@ -18,6 +18,10 @@ $(function() {
     search(url_to_search);
   });
 
+  $('.show_feed').on("click", function() {
+    message('AAAA')
+  })
+
 });
 
 
@@ -42,6 +46,7 @@ function search(url) {
       } else if (content_type.match(/xml/)) {
         console.log('XML parse')
         show_item_from_feed(url, data);
+        $.mobile.changePage('#channels_page', {allowSamePageTransition: true});
       }
     },
     error: function (request, textStatus, errorThrown) {
@@ -60,7 +65,7 @@ function show_item_from_feed(url, xml) {
 
   var items = [];
 
-  $channel.find("item").each( function(){
+  $channel.find("item").each( function(index, item){
     
     // appendHtml += fetchItemAsHTML($(this));
 
@@ -75,11 +80,18 @@ function show_item_from_feed(url, xml) {
     items.push(item);
 
     appendHtml += "<li data-role='list-divider'>"+$(this).find("pubDate").text()+"<span class='ui-li-count'>1</span></li>" +
-                  "<li>" +
-                    "<a href='index.html'>" +
+                  "<li class='show_feed'>" +
+                    "<a href='#show_feed'>" +
                       "<h2>"+$(this).find("title").text()+"</h2>" +
                     "</a>"
                   "</li>";
+
+    if(index == 1) {
+      $('#feed_content').html(item['content']);
+      $('#feed_title').html(item['title']);
+      $('#audio_src').attr('src', item['media_url']);
+      $('#audio_tag').load();
+    }
 
   });
 
